@@ -164,13 +164,16 @@ cpdef make_minibatch_with_random_lengths_from_float_vecs(FloatVecs Vecs, object 
     
     for i in prange(num_indices, nogil=True, schedule='static'):
         idx = indices_ptr[i]
-        in_length = lengths_ptr[idx]
-        start_idx = <int64_t>(urand_nums_ptr[i]*<float32_t>max(in_length - max_len + 1, 0))
-        L = min(in_length,start_idx+max_len)
         out_vec = &out_ptr[i*max_len]
         in_vec = <float32_t*>vec_locs_ptr[idx]
+        in_length = lengths_ptr[idx]
+        start_idx = (<int64_t>(urand_nums_ptr[i]*<float32_t>(in_length+max_len+1)))-max_len
         j = 0
-        for l in range(start_idx, L):
+        for l in range(start_idx,0):
+            out_vec[j] = fill_value
+            j += 1
+        L = min(in_length,max_len+start_idx)
+        for l in range(max(0,start_idx),L):
             out_vec[j] = in_vec[l]
             j += 1
         if (j+1) < max_len:
@@ -309,13 +312,16 @@ cpdef make_minibatch_with_random_lengths_from_int_vecs(IntVecs Vecs, object indi
     
     for i in prange(num_indices, nogil=True, schedule='static'):
         idx = indices_ptr[i]
-        in_length = lengths_ptr[idx]
-        start_idx = <int64_t>(urand_nums_ptr[i]*<float32_t>max(in_length - max_len + 1, 0))
-        L = min(in_length,start_idx+max_len)
         out_vec = &out_ptr[i*max_len]
         in_vec = <int32_t*>vec_locs_ptr[idx]
+        in_length = lengths_ptr[idx]
+        start_idx = (<int64_t>(urand_nums_ptr[i]*<float32_t>(in_length+max_len+1)))-max_len
         j = 0
-        for l in range(start_idx, L):
+        for l in range(start_idx,0):
+            out_vec[j] = fill_value
+            j += 1
+        L = min(in_length,max_len+start_idx)
+        for l in range(max(0,start_idx),L):
             out_vec[j] = in_vec[l]
             j += 1
         if (j+1) < max_len:
@@ -454,13 +460,16 @@ cpdef make_minibatch_with_random_lengths_from_short_vecs(ShortVecs Vecs, object 
     
     for i in prange(num_indices, nogil=True, schedule='static'):
         idx = indices_ptr[i]
-        in_length = lengths_ptr[idx]
-        start_idx = <int64_t>(urand_nums_ptr[i]*<float32_t>max(in_length - max_len + 1, 0))
-        L = min(in_length,start_idx+max_len)
         out_vec = &out_ptr[i*max_len]
         in_vec = <int16_t*>vec_locs_ptr[idx]
+        in_length = lengths_ptr[idx]
+        start_idx = (<int64_t>(urand_nums_ptr[i]*<float32_t>(in_length+max_len+1)))-max_len
         j = 0
-        for l in range(start_idx, L):
+        for l in range(start_idx,0):
+            out_vec[j] = fill_value
+            j += 1
+        L = min(in_length,max_len+start_idx)
+        for l in range(max(0,start_idx),L):
             out_vec[j] = in_vec[l]
             j += 1
         if (j+1) < max_len:
