@@ -1,3 +1,6 @@
 *.pyc
 *.cpp
+*.so
+*.dll
+*.pyd
 build/*

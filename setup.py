@@ -32,8 +32,8 @@ for e in ext_modules:
 
 
 setup(
-    name='rush',
-    packages=['rush'],
+    name='fairytext',
+    packages=['fairytext'],
     #package_data = {
      #   'nula': ['cuda_code.cu']    
     #},
