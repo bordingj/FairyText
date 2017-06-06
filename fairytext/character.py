@@ -1,7 +1,6 @@
 import re
 import string
 import numpy as np
-import pandas as pd
 
 NULL_CHAR = '\0'
 
@@ -12,14 +11,14 @@ WHITESPACE_CHARS = [x for x in string.whitespace if x in VALID_CHARS]
 
 NON_VALID_REGEX = re.compile('[^' + ''.join(VALID_CHARS) + ']')
 
-CHAR2INT_MAP = pd.Series(np.arange(len(VALID_CHARS)).astype(np.int16), index=VALID_CHARS)
+INT2CHAR_MAP = dict(zip(np.arange(len(VALID_CHARS)), VALID_CHARS))
 
-INT2CHAR_MAP = pd.Series(CHAR2INT_MAP.index.values, index=CHAR2INT_MAP.values)
+CHAR2INT_MAP = {val: key for key, val in INT2CHAR_MAP.items()}
 
 def ints2str(integers):
-    return ''.join(INT2CHAR_MAP.loc[INT2CHAR_MAP].values)
+    return ''.join([INT2CHAR_MAP[x] for x in integers])
 
-def str2ints(str_):
-    return CHAR2INT_MAP.loc[list(str_)].values
+def str2ints(s):
+    return [CHAR2INT_MAP[c] for c in s]
 
 WHITESPACE_INTS = str2ints(''.join(WHITESPACE_CHARS))
