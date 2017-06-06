@@ -1,11 +1,14 @@
-import sys
 import re
 import string
 import numpy as np
 import pandas as pd
 
+NULL_CHAR = '\0'
+
 
 VALID_CHARS = [x for x in string.printable+'\0']
+
+WHITESPACE_CHARS = [x for x in string.whitespace if x in VALID_CHARS]
 
 NON_VALID_REGEX = re.compile('[^' + ''.join(VALID_CHARS) + ']')
 
@@ -18,3 +21,5 @@ def ints2str(integers):
 
 def str2ints(str_):
     return CHAR2INT_MAP.loc[list(str_)].values
+
+WHITESPACE_INTS = str2ints(''.join(WHITESPACE_CHARS))
